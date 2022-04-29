@@ -266,6 +266,7 @@ typedef volatile struct tagHBA_PORT {
 	uint32_t vendor[4];	// 0x70 ~ 0x7F, vendor specific
 } HBA_PORT;
 
+
 typedef volatile struct tagHBA_FIS {
 	// 0x00
 	FIS_DMA_SETUP	dsfis;		// DMA Setup FIS
