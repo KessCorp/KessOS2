@@ -1,7 +1,6 @@
 #include <drivers/video/FrameBuffer.h>
 #include <drivers/timer/PIT.h>
 #include <drivers/audio/pcspkr.h>
-#include <drivers/pci/pci.h>
 #include <debug/log.h>
 #include <arch/memory/memory.h>
 #include <arch/memory/gdt.h>
@@ -163,9 +162,6 @@ int _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo, void* rsdp,
     init(meminfo);
     STI;
 
-    pit_sleep(150);
-
-    pci_enumerate_and_log();
     pit_sleep(150);
 
     CLI;
