@@ -4,6 +4,8 @@
 #include <arch/io/io.h>
 #include <util/asm.h>
 
+// 2022 Ian Moffett <ian@kesscoin.com>
+
 #define CONFIG_ADDRESS 0xCF8
 #define CONFIG_DATA 0xCFC
 
@@ -58,4 +60,27 @@ void pci_enumerate_and_log() {
     }
 
     log("%d devices found!\n", S_INFO, count);
+}
+
+uint16_t pci_read_vendor_id(uint8_t bus, uint8_t device, uint8_t func) {
+    uint32_t id = pci_read_word(bus, device, func, 0);
+    return id;
+}
+
+
+uint16_t pci_get_device_id(uint8_t bus, uint8_t device, uint8_t func) {
+    uint32_t id = pci_read_word(bus, device, func, 2);
+    return id;
+}
+
+
+uint16_t pci_get_class_id(uint8_t bus, uint8_t device, uint8_t func) {
+    uint32_t id = pci_read_word(bus, device, func, 0xA);
+    return (id & ~(0x00FF)) >> 8;
+}
+
+
+uint16_t pci_get_subclass_id(uint8_t bus, uint8_t device, uint8_t func) {
+    uint32_t id = pci_read_word(bus, device, func, 0xA);
+    return (id & ~(0xFF00));
 }
