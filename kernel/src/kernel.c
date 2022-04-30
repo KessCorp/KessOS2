@@ -11,7 +11,9 @@
 #include <interrupts/exceptions.h>
 #include <interrupts/syscall/syscall.h>
 #include <util/asm.h>
+#include <util/etc.h>
 #include <proc/TSS.h>
+#include <proc/thread.h>
 
 
 canvas_t canvas = {
@@ -108,6 +110,11 @@ void log(const char* format, STATUS status, ...) {
 }
 
 
+void reboot() {
+    outportb(0x64, 0xFE);
+} 
+
+
 static void init(meminfo_t meminfo) {
     load_gdt();
 
@@ -153,6 +160,7 @@ static void init(meminfo_t meminfo) {
 }
 
 
+
 int _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo, void* rsdp, uint8_t legacy_mode) {
     canvas.font = font;
     canvas.lfb = lfb;
@@ -160,6 +168,7 @@ int _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo, void* rsdp,
 
     CLI;
     init(meminfo);
+    mkthread((uint64_t)reboot);
     STI;
 
     pit_sleep(150);

@@ -4,6 +4,7 @@
 #include <arch/io/io.h>
 #include <arch/io/legacy-pic.h>
 #include <debug/log.h>
+#include <proc/thread.h>
 
 // 2022 Ian Moffett <ian@kesscoin.com>
 
@@ -28,5 +29,6 @@ void pit_sleep(uint64_t _ticks) {
 
 __attribute__((interrupt)) void irq0_handler(struct InterruptFrame*) {
     ++ticks;
+    thread_pit_schedule();
     PIC_sendEOI(0x0);
 }
