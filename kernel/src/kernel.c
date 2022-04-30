@@ -107,11 +107,6 @@ void log(const char* format, STATUS status, ...) {
     char terminated[2] = {format[i], 0x0};
     kwrite(&canvas, terminated, color);
   }
-}
-
-
-void reboot() {
-    outportb(0x64, 0xFE);
 } 
 
 
@@ -168,7 +163,6 @@ int _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo, void* rsdp,
 
     CLI;
     init(meminfo);
-    mkthread((uint64_t)reboot);
     STI;
 
     pit_sleep(150);
