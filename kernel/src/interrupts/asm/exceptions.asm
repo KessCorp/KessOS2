@@ -37,9 +37,9 @@ extern dump_stack
     mov rsi, PANIC
     call log
 
-	mov rdi, panicmsg2
-	mov rsi, -1
-	call log
+    mov rdi, panicmsg2
+    mov rsi, -1
+    call log
 
     mov rdi, %1
     call hex2str
@@ -47,16 +47,16 @@ extern dump_stack
     mov rsi, -1
     call log
 
-	mov rdi, newline
-	mov rsi, -1
-	call log
+    mov rdi, newline
+    mov rsi, -1
+    call log
 
-	mov rdi, panicmsg3
-	mov rsi, -1
-	call log
+    mov rdi, panicmsg3
+    mov rsi, -1
+    call log
 
-	mov rdi, rsp
-	call dump_stack
+    mov rdi, rsp
+    call dump_stack
 
     cli
     hlt
