@@ -18,6 +18,8 @@ void mkthread(uint64_t exec_addr) {
 
 void thread_pit_schedule() {
     if (ctid >= MAX_THREADS - 1) return;
+    if (threads[ctid] == 0) return;
+
     void(*exec)(void) = (void*)threads[ctid++];
     exec();
 }
