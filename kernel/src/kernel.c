@@ -13,7 +13,6 @@
 #include <util/asm.h>
 #include <util/etc.h>
 #include <proc/TSS.h>
-#include <proc/thread.h>
 
 
 canvas_t canvas = {
