@@ -16,6 +16,17 @@ void mkthread(uint64_t exec_addr) {
 }
 
 
+void unlist_thread(int tid) {
+    if (tid > MAX_THREADS - 1) return;
+    threads[tid] = 0x0;
+}
+
+
+uint8_t get_active_thread() {
+    return ctid;
+}
+
+
 void thread_pit_schedule() {
     if (ctid >= MAX_THREADS - 1) return;
     if (threads[ctid] == 0) return;
