@@ -7,6 +7,7 @@ all:
 	bash builduserspace.sh
 	mv *.o kernel/lib/userspace
 	cd gnu-efi/; make; make bootloader; cd ../; cd kernel; make; make buildimg
+	cp kernel/bin/KessOS.img ./
 
 run:
 	cd kernel/; make debug
