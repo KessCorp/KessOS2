@@ -125,3 +125,62 @@ uint8_t pci_get_prog_if(uint8_t bus, uint8_t slot, uint8_t func) {
 uint8_t pci_get_revision_id(uint8_t bus, uint8_t slot, uint8_t func) {
     return pci_read_word(bus, slot, func, 0x8) & 0x00FF;
 }
+
+
+static uint16_t get_bar0_low(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0x10);
+}
+
+
+static uint16_t get_bar0_high(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0x12);    
+}
+
+
+static uint16_t get_bar1_low(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0x14);
+}
+
+
+static uint16_t get_bar1_high(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0x16);
+}
+
+
+static uint16_t get_bar2_low(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0x18);
+}
+
+
+static uint16_t get_bar2_high(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0x1A);
+}
+
+
+static uint16_t get_bar3_low(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0x1C);
+}
+
+static uint16_t get_bar3_high(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0xE);
+}
+
+
+static uint16_t get_bar4_low(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0x20);
+}
+
+
+static uint16_t get_bar4_high(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0x22);
+}
+
+
+static uint16_t get_bar5_low(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0x24);
+}
+
+
+static uint16_t get_bar5_high(uint8_t bus, uint8_t slot, uint8_t func) {
+    return pci_read_word(bus, slot, func, 0x26);
+}
