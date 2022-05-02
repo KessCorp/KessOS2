@@ -125,29 +125,3 @@ uint8_t pci_get_prog_if(uint8_t bus, uint8_t slot, uint8_t func) {
 uint8_t pci_get_revision_id(uint8_t bus, uint8_t slot, uint8_t func) {
     return pci_read_word(bus, slot, func, 0x8) & 0x00FF;
 }
-
-
-struct PCIDevice pci_loop_through(uint8_t i) {
-    for (int bus = 0 + i; bus < 255; ++bus) {
-        for (int slot = 0; slot < 32; ++slot) {
-            for (int func = 0; func < 8; ++func) {
-                if (pci_vendor_is_valid(pci_read_word(bus, slot, func, 0))) {
-                    struct PCIDevice dev = {
-                        .bus = bus,
-                        .slot = slot,
-                        .func = func,
-                        .valid = 1
-                    };
-
-                    return dev;
-                }
-            }
-        }
-    }
-
-    struct PCIDevice invalid_dev = {
-        .valid = 0
-    };
-    
-    return invalid_dev;         // No device found!
-}

@@ -24,7 +24,6 @@ uint8_t pci_get_subclass_id(uint8_t bus, uint8_t slot, uint8_t func);
 uint8_t pci_get_prog_if(uint8_t bus, uint8_t slot, uint8_t func);
 uint8_t pci_get_revision_id(uint8_t bus, uint8_t slot, uint8_t func);
 uint8_t pci_vendor_is_valid(uint16_t vendor_id);
-struct PCIDevice pci_loop_through(uint8_t i);
 void pci_enumerate_and_log();
 
 
