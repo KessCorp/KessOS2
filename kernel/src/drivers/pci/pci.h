@@ -7,6 +7,10 @@
 #include <arch/io/io.h>
 #include <stdint.h>
 
+#define PCI_HIGHEST_BUS 255
+#define PCI_HIGHEST_SLOT 32
+#define PCI_HIGHEST_FUNC 8
+
 
 struct PCIDevice {
     uint8_t bus;
