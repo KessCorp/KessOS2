@@ -11,6 +11,12 @@
 #define PCI_HIGHEST_SLOT 32
 #define PCI_HIGHEST_FUNC 8
 
+/*
+ *  You can loop through everything with
+ *  a nested for loop using all these
+ *  macros above as max values.
+ */
+
 
 struct PCIDevice {
     uint8_t bus;
