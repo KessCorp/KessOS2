@@ -1,6 +1,7 @@
 #include <drivers/video/FrameBuffer.h>
 #include <drivers/timer/PIT.h>
 #include <drivers/audio/pcspkr.h>
+#include <drivers/pci/pci.h>
 #include <debug/log.h>
 #include <arch/memory/memory.h>
 #include <arch/memory/gdt.h>
@@ -137,7 +138,6 @@ static void init(meminfo_t meminfo) {
     log("Setting up legacy PIC (legacy mode is off, will use APIC one day\n", S_INFO);
     init_pic();
 
-    log("Disabling verbose mode. (Don't want to fill up screen and too lazy to implement scrolling).\n", S_INFO);
     // Setup un-exceptions.
     set_idt_vec(0x20, irq0_handler, INT_GATE_FLAGS);
     set_idt_vec(0x80, syscall_gate, IDT_INT_GATE_USER);
@@ -163,6 +163,11 @@ int _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo, void* rsdp,
     CLI;
     init(meminfo);
     STI;
+
+    CLI;
+    pci_enumerate_and_log();
+    STI;
+    pit_sleep(200);
 
     pit_sleep(150);
 
