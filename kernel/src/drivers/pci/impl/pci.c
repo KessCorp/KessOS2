@@ -111,3 +111,8 @@ uint8_t pci_get_classid(uint8_t bus, uint8_t slot, uint8_t func) {
 uint8_t pci_get_subclass_id(uint8_t bus, uint8_t slot, uint8_t func) {
     return pci_read_word(bus, slot, func, 0xA) & 0x00FF;
 }
+
+
+uint8_t pci_get_prog_if(uint8_t bus, uint8_t slot, uint8_t func) {
+    return (pci_read_word(bus, slot, func, 0x8) & 0xFF00) >> 8;
+}
