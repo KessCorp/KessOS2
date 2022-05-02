@@ -26,6 +26,30 @@ struct PCIDevice {
 };
 
 
+typedef enum {
+    NOT_FINALIZED,
+    MASS_STORAGE_CONTROLLER,
+    NETWORK_CONTROLLER,
+    DISPLAY_CONTROLLER,
+    MULTI_MEDIA_DEVICE,
+    MEMORY_CONTROLLER,
+    BRIDGE_DEVICE,
+    SCC,
+    BASE_SYSTEM_PERIPHERALS,
+    INPUT_DEVICES,
+    DOCKING_STATIONS,
+    PROCESSORS,
+    SERIAL_BUS_CONTROLLERS,
+    WIRELESS_CONTROLLER,
+    INTELLIGENT_IO_CONTROLLER,
+    SATELLITE_COMMUNICATION_CONTROLLERS,
+    DASP_CONTROLLER,
+    PROCESSING_ACCESLERATORS,
+    NE,
+    RESERVED
+} BASE_CLASS;
+
+
 uint16_t pci_read_word(uint8_t bus, uint8_t slot, uint8_t func, uint8_t offset);
 uint16_t pci_get_vendor_id(uint8_t bus, uint8_t slot, uint8_t func);
 uint16_t pci_get_device_id(uint8_t bus, uint8_t slot, uint8_t func);
