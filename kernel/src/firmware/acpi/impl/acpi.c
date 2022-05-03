@@ -21,8 +21,7 @@ static uint8_t rsdt_valid() {
         sum += tmp[i];
     }
 
-    if (sum % 0x100 == 0) return 1;
-    return 0;
+    return sum % 0x100 == 0;
 }
 
 
@@ -36,6 +35,18 @@ static uint8_t locate_fadt() {
     }
 
     return 0;
+}
+
+
+static uint8_t is_fadt_valid() {
+    unsigned char sum = 0;
+
+    for (int i = 0; i < fadt->header.length; ++i) {
+        char* tmp = (char*)&fadt->header;
+        sum += tmp[i];
+    }
+
+    return sum % 0x100 == 0;
 }
 
 
@@ -55,10 +66,15 @@ void acpi_init(void* rsdp) {
     // Get amount of RSDT entries.
     rsdt_entries = (rsdt->header.length - sizeof(rsdt->header)) / 4;
 
-    // Locate FADT.
-    
+    // Locate FADT.    
     if (!(locate_fadt())) {
         log("FADT not found (System Halted Until Reboot).\n", S_CRITICAL);
+        HALT;
+    }
+
+    // Check if FADT is valid.
+    if (!(is_fadt_valid())) {
+        log("FADT checksum invalid, please contact me at [HSC] Spurious#0070 on Discord (System Halted Until Reboot).\n", S_CRITICAL);
         HALT;
     }
 }
