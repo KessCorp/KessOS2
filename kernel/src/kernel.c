@@ -15,6 +15,7 @@
 #include <util/asm.h>
 #include <util/etc.h>
 #include <proc/TSS.h>
+#include <firmware/acpi/acpi.h>
 
 
 canvas_t canvas = {
@@ -111,7 +112,7 @@ void log(const char* format, STATUS status, ...) {
 } 
 
 
-static void init(meminfo_t meminfo) {
+static void init(meminfo_t meminfo, void* rsdp) {
     load_gdt();
 
     // Init TSS.
@@ -151,7 +152,7 @@ static void init(meminfo_t meminfo) {
 
     // Init VMM.
     init_vmm(meminfo);
-
+    acpi_init(rsdp);
 }
 
 
@@ -162,7 +163,7 @@ int _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo, void* rsdp,
     gLegacyModeEnabled = legacy_mode;
 
     CLI;
-    init(meminfo);
+    init(meminfo, rsdp);
     STI;
 
     CLI;
