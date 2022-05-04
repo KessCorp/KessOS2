@@ -41,6 +41,41 @@ static volatile struct Controller {
 } controller;
 
 
+
+static void log_host_status() {
+    // We will only check 4 bits. Don't wanna fill the whole screen up with info.
+    for (int bit = 0; bit <= 4; ++bit) {             // We will check each bit and have a true or false output (true: set, false: unset).
+
+        if (bit == 1) continue;                     // Reserved bit, so skip.
+
+        const char* value;
+        const char* status;
+
+        if (controller.op_regs->usbsts & (1 << bit)) 
+            status = "true";
+        else
+            status = "false";
+
+        switch (bit) {
+            case 0:
+                value = "HCHalted";
+                break;
+            case 2: 
+                value = "HostSystemError";
+                break;
+            case 3:
+                value = "EventInterrupt";
+                break;
+            case 4:
+                value = "PortChangeDetect";
+                break;
+        }
+
+        log("%s: %s\n", S_INFO, value, status);         // Log the value.
+    }
+}
+
+
 uint8_t xhci_init() {
     for (int bus = 0; bus < PCI_HIGHEST_BUS; ++bus) {
         for (int slot = 0; slot < PCI_HIGHEST_SLOT; ++slot) {
@@ -74,6 +109,9 @@ uint8_t xhci_init() {
                         log("Controller's Operational Register's crcr != 0 (System Halted Until Reboot)\n", S_CRITICAL);
                         HALT;
                     }
+
+                    log("Dumping 4 bits of USB opreg collection's status register..\n", S_INFO);
+                    log_host_status();
 
                     return 1;
                 }
