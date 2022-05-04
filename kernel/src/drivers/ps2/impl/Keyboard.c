@@ -2,11 +2,12 @@
 #include <arch/io/io.h>
 #include <arch/io/legacy-pic.h>
 #include <debug/log.h>
+#include <util/asm.h>
 
 // 2022 Ian Moffett <ian@kesscoin.com>
 
 
-struct PS2Keystroke ps2_keystroke_buffer;
+static struct PS2Keystroke ps2_keystroke_buffer;
 
 static const uint8_t* const SC_ASCII = "\x00\x1B" "1234567890-=" "\x08"
 "\x00" "qwertyuiop[]" "\x0D\x1D" "asdfghjkl;'`" "\x00" "\\"
@@ -15,7 +16,14 @@ static const uint8_t* const SC_ASCII = "\x00\x1B" "1234567890-=" "\x08"
 
 void ps2_keyboard_init() {
     log("Initalizing ps/2 keyboard..\n", S_INFO);
-    outportb(PIC1_DATA, inportb(PIC1_DATA) ^ (1 << 1));
+    outportb(PIC1_DATA, inportb(PIC1_DATA) ^ (1 << 1));         // Unmask channel for IRQ 1.
+}
+
+
+struct PS2Keystroke fetch_last_ps2_keystroke() {
+    // If a program in userspace somehow calls this directly, it will GPF due to the instructions behind this macro.
+    USER_INDIRECTION;
+    return ps2_keystroke_buffer;
 }
 
 

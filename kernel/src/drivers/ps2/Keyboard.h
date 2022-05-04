@@ -15,6 +15,7 @@ struct PS2Keystroke {
 
 
 void ps2_keyboard_init();
+struct PS2Keystroke fetch_last_ps2_keystroke();
 __attribute__((interrupt)) void irq1_handler(struct InterruptFrame*);
 
 #endif
