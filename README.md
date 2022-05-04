@@ -10,6 +10,7 @@ happening in the background.<br>
 * More hardware support.
 * PS/2 drivers.
 * A shell.
+* System/Application operation logs (so you know what it is doing).
 * Support for more USB hosts.
 * Optional GUI.
 * Networking.
