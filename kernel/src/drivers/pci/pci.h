@@ -26,6 +26,16 @@ struct PCIDevice {
 };
 
 
+struct BarSpace {
+    uint32_t bar0;
+    uint32_t bar1;
+    uint32_t bar2;
+    uint32_t bar3;
+    uint32_t bar4;
+    uint32_t bar5;
+};
+
+
 typedef enum {
     NOT_FINALIZED,
     MASS_STORAGE_CONTROLLER,
@@ -60,10 +70,6 @@ uint8_t pci_get_revision_id(uint8_t bus, uint8_t slot, uint8_t func);
 uint8_t pci_vendor_is_valid(uint16_t vendor_id);
 uint32_t pci_get_bar0(uint8_t bus, uint8_t slot, uint8_t func);
 uint32_t pci_get_bar1(uint8_t bus, uint8_t slot, uint8_t func);
-uint32_t pci_get_bar2(uint8_t bus, uint8_t slot, uint8_t func);
-uint32_t pci_get_bar3(uint8_t bus, uint8_t slot, uint8_t func);
-uint32_t pci_get_bar4(uint8_t bus, uint8_t slot, uint8_t func);
-uint32_t pci_get_bar5(uint8_t bus, uint8_t slot, uint8_t func);
 void pci_enumerate_and_log();
 
 

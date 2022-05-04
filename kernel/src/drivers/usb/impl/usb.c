@@ -15,7 +15,7 @@ void usb_init() {
 
 
     if (xhci_init()) {
-        log("Found XHCI controller (Putting to use).\n", S_INFO);
+        log("Found xHCI controller (Putting to use).\n", S_INFO);
         return;
     } else {
         // TODO: Remove this else when adding more controllers.

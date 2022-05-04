@@ -147,70 +147,37 @@ static uint16_t get_bar1_high(uint8_t bus, uint8_t slot, uint8_t func) {
 }
 
 
-static uint16_t get_bar2_low(uint8_t bus, uint8_t slot, uint8_t func) {
-    return pci_read_word(bus, slot, func, 0x18);
-}
-
-
-static uint16_t get_bar2_high(uint8_t bus, uint8_t slot, uint8_t func) {
-    return pci_read_word(bus, slot, func, 0x1A);
-}
-
-
-static uint16_t get_bar3_low(uint8_t bus, uint8_t slot, uint8_t func) {
-    return pci_read_word(bus, slot, func, 0x1C);
-}
-
-static uint16_t get_bar3_high(uint8_t bus, uint8_t slot, uint8_t func) {
-    return pci_read_word(bus, slot, func, 0xE);
-}
-
-
-static uint16_t get_bar4_low(uint8_t bus, uint8_t slot, uint8_t func) {
-    return pci_read_word(bus, slot, func, 0x20);
-}
-
-
-static uint16_t get_bar4_high(uint8_t bus, uint8_t slot, uint8_t func) {
-    return pci_read_word(bus, slot, func, 0x22);
-}
-
-
-static uint16_t get_bar5_low(uint8_t bus, uint8_t slot, uint8_t func) {
-    return pci_read_word(bus, slot, func, 0x24);
-}
-
-
-static uint16_t get_bar5_high(uint8_t bus, uint8_t slot, uint8_t func) {
-    return pci_read_word(bus, slot, func, 0x26);
-}
-
-
 uint32_t pci_get_bar0(uint8_t bus, uint8_t slot, uint8_t func) {
-    return get_bar0_low(bus, slot, func) | get_bar0_high(bus, slot, func);
+    uint16_t low = get_bar0_low(bus, slot, func);
+    
+    // Is it IO space BAR?
+    if (low & 1) {
+        low ^= (1 << 0);                                // Make bit 0 zero.
+        if (low & (1 << 1)) low ^= (1 << 1);            // Make bit 1 zero if it is not zero.
+    } else {
+        if (low & (1 << 1)) low ^= (1 << 1);            // Make bit 1 zero if it is not zero.
+        if (low & (1 << 2)) low ^= (1 << 2);            // Make bit 2 zero if it is not zero.
+        if (low & (1 << 3)) low ^= (1 << 3);            // Make bit 3 zero if not zero.
+    }
+
+    uint32_t combined = (uint64_t)get_bar0_high(bus, slot, func) << 16 | low;
+    return combined;
 }
 
 
 uint32_t pci_get_bar1(uint8_t bus, uint8_t slot, uint8_t func) {
-    return get_bar1_low(bus, slot, func) | get_bar1_high(bus, slot, func);
-}
+    uint16_t low = get_bar1_low(bus, slot, func); 
 
+    // Is it IO space BAR?
+    if (low & 1) {
+        low ^= (1 << 0);                                // Make bit 0 zero.
+        if (low & (1 << 1)) low ^= (1 << 1);            // Make bit 1 zero if it is not zero.
+    } else {
+        if (low & (1 << 1)) low ^= (1 << 1);            // Make bit 1 zero if it is not zero.
+        if (low & (1 << 2)) low ^= (1 << 2);            // Make bit 2 zero if it is not zero.
+        if (low & (1 << 3)) low ^= (1 << 3);            // Make bit 3 zero if not zero.
+    }
 
-uint32_t pci_get_bar2(uint8_t bus, uint8_t slot, uint8_t func) {
-    return get_bar2_low(bus, slot, func) | get_bar2_high(bus, slot, func);
-}
-
-
-uint32_t pci_get_bar3(uint8_t bus, uint8_t slot, uint8_t func) {
-    return get_bar3_low(bus, slot, func) | get_bar3_high(bus, slot, func);
-}
-
-
-uint32_t pci_get_bar4(uint8_t bus, uint8_t slot, uint8_t func) {
-    return get_bar4_low(bus, slot, func) | get_bar4_high(bus, slot, func);
-}
-
-
-uint32_t pci_get_bar5(uint8_t bus, uint8_t slot, uint8_t func) {
-    return get_bar5_low(bus, slot, func) | get_bar5_high(bus, slot, func);
+    uint32_t combined = (uint64_t)get_bar1_high(bus, slot, func) << 16 | low;
+    return combined;
 }

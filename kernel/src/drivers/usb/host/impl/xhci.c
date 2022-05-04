@@ -1,14 +1,15 @@
 #include <drivers/usb/host/xhci.h>
 #include <drivers/pci/pci.h>
+#include <debug/log.h>
+#include <util/asm.h>
 
 // 2022 Ian Moffett <ian@kesscoin.com>
 
 
-static struct PCIDevice xhci_controller;
-static uint64_t mmio_addr;
+static struct PCIDevice xhci_controller_info;
 
-static struct Controller {
-    struct CapRegs {
+static volatile struct Controller {
+    volatile struct CapRegs {
         uint8_t caplength;
         uint8_t rsvd;
         uint16_t hciversion;
@@ -18,23 +19,25 @@ static struct Controller {
         uint32_t dboff;
         uint32_t rtsoff;
         uint32_t hccparams2;
-    } cap_regs;
+    } *cap_regs;
     
-    struct OpRegs {
+    volatile struct OpRegs {
         uint32_t usbcmd;
         uint32_t usbsts;
         uint64_t dnctrl;
-        uint32_t cncr;
+        uint32_t crcr;
         uint64_t dcbaap;
         uint64_t config;
-    } op_regs;
+    } *op_regs;
 
-    struct PortRegs {
+    volatile struct PortRegs {
         uint32_t portsc;
         uint32_t portpmsc;
         uint32_t portli;
         uint32_t reserved;
-    } port_regs;
+    } *port_regs;
+
+    uint64_t mmio_addr;
 } controller;
 
 
@@ -54,10 +57,24 @@ uint8_t xhci_init() {
                         .valid = 1
                     };
 
-                    xhci_controller = xhci;
+                    xhci_controller_info = xhci;
+                    uint32_t bar0 = pci_get_bar0(bus, slot, func);
+                    uint32_t bar1 = pci_get_bar1(bus, slot, func);
+                    
+                    // Setup controller regs.
+                    controller.mmio_addr = (uint64_t)bar1 << 32 | bar0;
+                    controller.cap_regs = (void*)controller.mmio_addr;
+                    controller.op_regs = (void*)controller.mmio_addr + controller.cap_regs->caplength;
 
-                    // Get MMIO address by combining BAR0 and BAR1. (I guess you just OR them together).
-                    mmio_addr = pci_get_bar0(bus, slot, func) | pci_get_bar1(bus, slot, func);
+                    // Log some stuff.
+                    log("xHCI MMIO => %x\n", S_INFO, controller.mmio_addr);
+
+                    // Check if crcr is zero.
+                    if (controller.op_regs->crcr != 0) {
+                        log("Controller's Operational Register's crcr != 0 (System Halted Until Reboot)\n", S_CRITICAL);
+                        HALT;
+                    }
+
                     return 1;
                 }
             }
