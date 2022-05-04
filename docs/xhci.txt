@@ -7,9 +7,47 @@ will initalize the controller, you do not need to mess with this
 as it is reserved.
 
 
+================================
+  Functions and their purposes.
+================================
+
 xhci_reset() will preform a Host Controller Reset.
 When software uses this function, the Host Controller resets 
 it's internal pipelines, timers,
 counters, state machines, etc. to their initial value. Any 
 transaction currently in progress on the
 USB is immediately terminated.
+
+
+================================
+  Messages and their meanings.
+================================
+
+
+Whenever you boot and you see "Dumping 4 bits of USB opreg collection's status register..": It is
+dumping 4 bits of the status register and assigning a true or false value. If the bit is set, the value will be true,
+if the bit is unset, the value will be false.
+
+Don't know what a bit is? Here is an explanation:
+
+"A binary digit, or bit, is the smallest unit of information in a computer. It is used for storing information and 
+has a value of true/false, or on/off. An individual bit has a value of either 0 or 1, 
+which is generally used to store data and implement instructions in groups of bytes. 
+A computer is often classified by the number of bits 
+it can process at one time or by the number of bits in a memory address. 
+Many systems use four eight-bit bytes to form a 32-bit word."
+
+We are using the bits as flags which are set for different things.
+
+
+-- HCHalted 
+    This value is set (true) when the host controller is halted, otherwise unset (false).
+
+-- HostSystemError
+    Something broke if this set (true).
+
+-- EventInterrupt 
+    True if interrupt is pending.
+
+-- PortChangeDetected
+    Will be true if something changes with a port.
