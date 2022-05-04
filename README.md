@@ -6,6 +6,7 @@ happening in the background.<br>
 
 ## Things that will be added.<br>
 
+* Full USB support.
 * More hardware support.
 * PS/2 drivers.
 * Support for more USB hosts.
