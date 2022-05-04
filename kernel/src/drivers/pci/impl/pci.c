@@ -148,16 +148,16 @@ static uint16_t get_bar1_high(uint8_t bus, uint8_t slot, uint8_t func) {
 
 
 uint32_t pci_get_bar0(uint8_t bus, uint8_t slot, uint8_t func) {
-    uint16_t low = get_bar0_low(bus, slot, func);
-    
+    uint16_t low = get_bar0_low(bus, slot, func); 
+
     // Is it IO space BAR?
     if (low & 1) {
-        low ^= (1 << 0);                                // Make bit 0 zero.
-        if (low & (1 << 1)) low ^= (1 << 1);            // Make bit 1 zero if it is not zero.
+        low &= ~(1 << 0);
+        low &= ~(1 << 1);
     } else {
-        if (low & (1 << 1)) low ^= (1 << 1);            // Make bit 1 zero if it is not zero.
-        if (low & (1 << 2)) low ^= (1 << 2);            // Make bit 2 zero if it is not zero.
-        if (low & (1 << 3)) low ^= (1 << 3);            // Make bit 3 zero if not zero.
+        low &= ~(1 << 1);
+        low &= ~(1 << 2);
+        low &= ~(1 << 3);
     }
 
     uint32_t combined = (uint64_t)get_bar0_high(bus, slot, func) << 16 | low;
@@ -170,12 +170,12 @@ uint32_t pci_get_bar1(uint8_t bus, uint8_t slot, uint8_t func) {
 
     // Is it IO space BAR?
     if (low & 1) {
-        low ^= (1 << 0);                                // Make bit 0 zero.
-        if (low & (1 << 1)) low ^= (1 << 1);            // Make bit 1 zero if it is not zero.
+        low &= ~(1 << 0);
+        low &= ~(1 << 1);
     } else {
-        if (low & (1 << 1)) low ^= (1 << 1);            // Make bit 1 zero if it is not zero.
-        if (low & (1 << 2)) low ^= (1 << 2);            // Make bit 2 zero if it is not zero.
-        if (low & (1 << 3)) low ^= (1 << 3);            // Make bit 3 zero if not zero.
+        low &= ~(1 << 1);
+        low &= ~(1 << 2);
+        low &= ~(1 << 3);
     }
 
     uint32_t combined = (uint64_t)get_bar1_high(bus, slot, func) << 16 | low;
