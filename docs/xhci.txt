@@ -1,0 +1,15 @@
+-----------------------------------
+2022 Ian Moffett <ian@kesscoin.com>
+-----------------------------------
+
+xhci_init()
+will initalize the controller, you do not need to mess with this
+as it is reserved.
+
+
+xhci_reset() will preform a Host Controller Reset.
+When software uses this function, the Host Controller resets 
+it's internal pipelines, timers,
+counters, state machines, etc. to their initial value. Any 
+transaction currently in progress on the
+USB is immediately terminated.
