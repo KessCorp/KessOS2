@@ -9,6 +9,7 @@ happening in the background.<br>
 * Full USB support.
 * More hardware support.
 * PS/2 drivers.
+* A shell.
 * Support for more USB hosts.
 * Optional GUI.
 * Networking.
