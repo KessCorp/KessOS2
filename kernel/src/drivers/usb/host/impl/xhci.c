@@ -89,3 +89,9 @@ uint8_t xhci_init() {
     return 0;   // No XHCI controller found.
 
 }
+
+
+
+void xhci_reset() {
+    controller.op_regs->usbcmd |= (1 << 1);
+}

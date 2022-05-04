@@ -6,8 +6,8 @@
 // 2022 Ian Moffett <ian@kesscoin.com>
 
 
-uint8_t xhci_init();
-
+uint8_t xhci_init();            // Reserved.
+void xhci_reset();
 
 
 #endif
