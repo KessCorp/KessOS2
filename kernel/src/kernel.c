@@ -10,6 +10,7 @@
 #include <arch/memory/vmm.h>
 #include <arch/io/legacy-pic.h>
 #include <arch/io/io.h>
+#include <arch/protection/iopl.h>
 #include <interrupts/IDT.h>
 #include <interrupts/exceptions.h>
 #include <interrupts/syscall/syscall.h>
@@ -161,6 +162,7 @@ static void init(meminfo_t meminfo, void* rsdp) {
 // Stuff to init under init() before userspace.
 static void footer_init() {
     ps2_keyboard_init();
+    iopl_zero();
 }
 
 
