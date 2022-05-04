@@ -3,6 +3,7 @@
 #include <drivers/audio/pcspkr.h>
 #include <drivers/pci/pci.h>
 #include <drivers/usb/usb.h>
+#include <drivers/ps2/Keyboard.h>
 #include <debug/log.h>
 #include <arch/memory/memory.h>
 #include <arch/memory/gdt.h>
@@ -142,6 +143,7 @@ static void init(meminfo_t meminfo, void* rsdp) {
 
     // Setup un-exceptions.
     set_idt_vec(0x20, irq0_handler, INT_GATE_FLAGS);
+    set_idt_vec(0x21, irq1_handler, INT_GATE_FLAGS);
     set_idt_vec(0x80, syscall_gate, IDT_INT_GATE_USER);
 
     // Init PIT.
@@ -153,6 +155,12 @@ static void init(meminfo_t meminfo, void* rsdp) {
     // Init VMM.
     init_vmm(meminfo);
     acpi_init(rsdp);
+}
+
+
+// Stuff to init under init() before userspace.
+static void footer_init() {
+    ps2_keyboard_init();
 }
 
 
@@ -178,13 +186,13 @@ int _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo, void* rsdp,
     clearScreen(&canvas, 0x000000);
     STI;
 
-    log("Hello, World!\n", S_INFO);
-
     pcspkr_play(500);
     pit_sleep(25);
     pcspkr_shutup();
 
-    CLI;
+    CLI;                        // TODO: Remove this soon.
+    footer_init();
+
     // Enter userspace.
     _context_switch();
     
