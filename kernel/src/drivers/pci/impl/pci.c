@@ -149,35 +149,13 @@ static uint16_t get_bar1_high(uint8_t bus, uint8_t slot, uint8_t func) {
 
 uint32_t pci_get_bar0(uint8_t bus, uint8_t slot, uint8_t func) {
     uint16_t low = get_bar0_low(bus, slot, func); 
-
-    // Is it IO space BAR?
-    if (low & 1) {
-        low &= ~(1 << 0);
-        low &= ~(1 << 1);
-    } else {
-        low &= ~(1 << 1);
-        low &= ~(1 << 2);
-        low &= ~(1 << 3);
-    }
-
-    uint32_t combined = (uint64_t)get_bar0_high(bus, slot, func) << 16 | low;
+    uint32_t combined = (uint32_t)get_bar0_high(bus, slot, func) << 16 | low;
     return combined;
 }
 
 
 uint32_t pci_get_bar1(uint8_t bus, uint8_t slot, uint8_t func) {
-    uint16_t low = get_bar1_low(bus, slot, func); 
-
-    // Is it IO space BAR?
-    if (low & 1) {
-        low &= ~(1 << 0);
-        low &= ~(1 << 1);
-    } else {
-        low &= ~(1 << 1);
-        low &= ~(1 << 2);
-        low &= ~(1 << 3);
-    }
-
-    uint32_t combined = (uint64_t)get_bar1_high(bus, slot, func) << 16 | low;
+    uint16_t low = get_bar1_low(bus, slot, func);
+    uint32_t combined = (uint32_t)get_bar1_high(bus, slot, func) << 16 | low;
     return combined;
 }
