@@ -2,7 +2,6 @@
 #include <drivers/timer/PIT.h>
 #include <drivers/audio/pcspkr.h>
 #include <drivers/pci/pci.h>
-#include <drivers/usb/usb.h>
 #include <drivers/ps2/Keyboard.h>
 #include <debug/log.h>
 #include <arch/memory/memory.h>
@@ -178,7 +177,6 @@ int _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo, void* rsdp,
 
     CLI;
     pci_enumerate_and_log();
-    usb_init();
     STI;
     pit_sleep(200);
 
