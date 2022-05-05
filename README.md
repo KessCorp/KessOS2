@@ -15,7 +15,11 @@ happening in the background.<br>
 * Optional GUI.
 * Networking.
 
-## Let me know what else to add! (Things that vanish from this list have been completed).<br>
 
 ### Please note that these will not be implemented right away as they take time.<br>
 
+## Let me know what else to add! (Things that vanish from this list have been completed).<br><br>
+
+## In order to interact with KessOS before we implement USB drivers, read below.<br>
+
+You will need a system that emulates USB devices as PS/2 devices, or you will need a system with PS/2 ports and a PS/2 keyboard.
