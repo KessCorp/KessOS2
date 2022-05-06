@@ -1,5 +1,9 @@
 # KessOS
 
+## Funky things happen on Qemu when running this.<br>
+## People have the best experience on hardware.
+
+
 You will always know what it's doing.<br>
 KessOS streams stuff that is
 happening in the background.<br>
