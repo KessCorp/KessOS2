@@ -27,3 +27,8 @@ happening in the background.<br>
 ## In order to interact with KessOS before we implement USB drivers, read below.<br>
 
 You will need a system that emulates USB devices as PS/2 devices, or you will need a system with PS/2 ports and a PS/2 keyboard.
+
+
+## Demo on real hardware.
+
+https://youtu.be/xs0qtvG_kd8
